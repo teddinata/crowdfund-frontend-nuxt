@@ -15,6 +15,7 @@
             >
             <input
               type="text"
+              v-model="register.name"
               class="auth-form focus:outline-none focus:bg-purple-hover focus:shadow-outline focus:border-purple-hover-stroke focus:text-gray-100"
               placeholder="Write Your Name Here"
               value="Julia Keeva Hanna"
@@ -28,6 +29,7 @@
             >
             <input
               type="text"
+              v-model="register.occupation"
               class="auth-form focus:outline-none focus:bg-purple-hover focus:shadow-outline focus:border-purple-hover-stroke focus:text-gray-100"
               placeholder="Write your occupation here"
               value="Graphic Designer"
@@ -41,6 +43,7 @@
             >
             <input
               type="email"
+              v-model="register.email"
               class="auth-form focus:outline-none focus:bg-purple-hover focus:shadow-outline focus:border-purple-hover-stroke focus:text-gray-100"
               placeholder="Write your email address here"
               value="julia.keeva@gmail.com"
@@ -54,6 +57,8 @@
             >
             <input
               type="password"
+              v-model="register.password"
+              @keyup.enter="userRegister"
               class="auth-form focus:outline-none focus:bg-purple-hover focus:shadow-outline focus:border-purple-hover-stroke focus:text-gray-100"
               placeholder="Type your password here"
               value="nasigorenglimaribbu"
@@ -63,8 +68,8 @@
         <div class="mb-6">
           <div class="mb-4">
             <button
-              @click="$router.push({ path: '/upload' })"
-              class="block w-full bg-orange-button hover:bg-green-button text-white font-semibold px-6 py-4 text-lg rounded-full"
+            @click="userRegister"
+            class="block w-full bg-orange-button hover:bg-green-button text-white font-semibold px-6 py-4 text-lg rounded-full"
             >
               Continue Sign Up
             </button>
@@ -85,7 +90,30 @@
 
 <script>
 export default {
-  layout: 'auth'
+  layout: 'auth',
+  data(){
+    return {
+      register: {
+        name: '',
+        occupation: '',
+        email: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    async userRegister(){
+      try {
+        let response = await this.$axios.post('/api/v1/users', this.register)
+        console.log(response.data.data.token)
+        this.$auth.setUserToken(response.data.data.token).then(() =>
+          this.$router.push({ path: '/upload' })
+        )
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
 }
 </script>
 

@@ -43,7 +43,8 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://auth.nuxtjs.org/
-    '@nuxtjs/auth-next',
+    // '@nuxtjs/auth-next',
+    '@nuxtjs/auth',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
   ],
@@ -57,20 +58,18 @@ export default {
   auth: {
     strategies: {
       local: {
-        // token: {
-        //   property: 'token',
-        //   global: true,
-        //   // required: true,
-        //   // type: 'Bearer'
-        // },
-        // user: {
-        //   property: 'user',
-        //   // autoFetch: true
-        // },
         endpoints: {
-          login: { url: '/api/v1/sessions', method: 'post', propertyName: 'data.token' },
+          login: {
+            url: '/api/v1/sessions',
+            method: 'post',
+            propertyName: 'data.token'
+          },
           logout: false,
-          user: { url: '/api/v1/user/fetch', method: 'get', propertyName: 'data' }
+          user: {
+            url: '/api/v1/users/fetch',
+            method: 'get',
+            propertyName: 'data'
+          }
         }
       }
     }
